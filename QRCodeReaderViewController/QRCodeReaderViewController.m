@@ -38,6 +38,7 @@
 @property (assign, nonatomic) BOOL                 startScanningAtLoad;
 @property (assign, nonatomic) BOOL                 showSwitchCameraButton;
 @property (assign, nonatomic) BOOL                 showTorchButton;
+@property (assign, nonatomic) BOOL                 showLineDash;
 
 @property (copy, nonatomic) void (^completionBlock) (NSString * __nullable);
 
@@ -84,7 +85,7 @@
   return [self initWithCancelButtonTitle:cancelTitle codeReader:codeReader startScanningAtLoad:startScanningAtLoad showSwitchCameraButton:YES showTorchButton:NO];
 }
 
-- (id)initWithCancelButtonTitle:(nullable NSString *)cancelTitle codeReader:(nonnull QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton
+- (id)initWithCancelButtonTitle:(nullable NSString *)cancelTitle codeReader:(nonnull QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton showLineDash:(BOOL)showLineDash
 {
   if ((self = [super init])) {
     self.view.backgroundColor   = [UIColor blackColor];
@@ -92,6 +93,7 @@
     self.startScanningAtLoad    = startScanningAtLoad;
     self.showSwitchCameraButton = showSwitchCameraButton;
     self.showTorchButton        = showTorchButton;
+    self.showLineDash           = showLineDash;
 
     if (cancelTitle == nil) {
       cancelTitle = NSLocalizedString(@"Cancel", @"Cancel");
@@ -146,7 +148,12 @@
 
 + (instancetype)readerWithCancelButtonTitle:(NSString *)cancelTitle codeReader:(QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton
 {
-  return [[self alloc] initWithCancelButtonTitle:cancelTitle codeReader:codeReader startScanningAtLoad:startScanningAtLoad showSwitchCameraButton:showSwitchCameraButton showTorchButton:showTorchButton];
+    return [[self alloc] initWithCancelButtonTitle:cancelTitle codeReader:codeReader startScanningAtLoad:startScanningAtLoad showSwitchCameraButton:showSwitchCameraButton showTorchButton:showTorchButton showLineDash:YES];
+}
+
++ (instancetype)readerWithCancelButtonTitle:(NSString *)cancelTitle codeReader:(QRCodeReader *)codeReader startScanningAtLoad:(BOOL)startScanningAtLoad showSwitchCameraButton:(BOOL)showSwitchCameraButton showTorchButton:(BOOL)showTorchButton showLineDash:(BOOL)showLineDash
+{
+  return [[self alloc] initWithCancelButtonTitle:cancelTitle codeReader:codeReader startScanningAtLoad:startScanningAtLoad showSwitchCameraButton:showSwitchCameraButton showTorchButton:showTorchButton showLineDash:showLineDash];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -212,7 +219,12 @@
 
 - (void)setupUIComponentsWithCancelButtonTitle:(NSString *)cancelButtonTitle
 {
-  self.cameraView                                       = [[QRCodeReaderView alloc] init];
+    
+    self.cameraView                                       = [[QRCodeReaderView alloc] init];
+    
+    if (!_showLineDash) {
+        self.cameraView.showLineDash = _showLineDash;
+    }
   _cameraView.translatesAutoresizingMaskIntoConstraints = NO;
   _cameraView.clipsToBounds                             = YES;
   [self.view addSubview:_cameraView];

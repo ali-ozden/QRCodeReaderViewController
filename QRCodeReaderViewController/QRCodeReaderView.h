@@ -33,4 +33,5 @@
  */
 @interface QRCodeReaderView : UIView
 
+@property (assign, nonatomic) BOOL showLineDash;
 @end

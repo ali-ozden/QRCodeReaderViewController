@@ -77,4 +77,10 @@
   [self.layer addSublayer:_overlay];
 }
 
+- (void)setShowLineDash:(BOOL)showLineDash{
+    if (!showLineDash) {
+        [_overlay removeFromSuperlayer];
+    }
+}
+
 @end
