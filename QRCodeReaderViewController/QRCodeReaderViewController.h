@@ -233,4 +233,8 @@
  */
 @property (strong, nonatomic, readonly) QRCodeReader * __nonnull codeReader;
 
+
+
+- (void)cancelAction:(UIButton *)button;
+
 @end
